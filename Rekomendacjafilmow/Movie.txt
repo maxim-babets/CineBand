@@ -1,0 +1,84 @@
+-- Tworzenie bazy danych
+CREATE DATABASE system_rekomendacji;
+
+-- Używanie stworzonej bazy danych
+USE system_rekomendacji;
+
+-- Tworzenie tabeli "Filmy"
+CREATE TABLE Filmy (
+    id_filmu INT PRIMARY KEY AUTO_INCREMENT,
+    tytul VARCHAR(255) NOT NULL,
+    gatunek VARCHAR(100),
+    rok_wydania INT
+);
+
+-- Tworzenie tabeli "Użytkownicy"
+CREATE TABLE Uzytkownicy (
+    id_uzytkownika INT PRIMARY KEY AUTO_INCREMENT,
+    nazwa VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Tworzenie tabeli "Oceny"
+CREATE TABLE Oceny (
+    id_oceny INT PRIMARY KEY AUTO_INCREMENT,
+    id_uzytkownika INT,
+    id_filmu INT,
+    ocena DECIMAL(2, 1),  -- Zakres ocen 0.0 - 10.0
+    FOREIGN KEY (id_uzytkownika) REFERENCES Uzytkownicy(id_uzytkownika),
+    FOREIGN KEY (id_filmu) REFERENCES Filmy(id_filmu)
+);
+
+-- Wstawianie danych do tabeli "Filmy"
+INSERT INTO Filmy (tytul, gatunek, rok_wydania) VALUES 
+('The Shawshank Redemption', 'Drama', 1994),
+('The Godfather', 'Crime', 1972),
+('The Dark Knight', 'Action', 2008),
+('Pulp Fiction', 'Crime', 1994),
+('Schindler''s List', 'Drama', 1993),
+('The Lord of the Rings: The Return of the King', 'Fantasy', 2003),
+('Inception', 'Sci-Fi', 2010),
+('Fight Club', 'Drama', 1999),
+('The Matrix', 'Sci-Fi', 1999),
+('Forrest Gump', 'Drama', 1994),
+('Star Wars: Episode IV - A New Hope', 'Sci-Fi', 1977),
+('The Silence of the Lambs', 'Thriller', 1991),
+('Se7en', 'Thriller', 1995),
+('Interstellar', 'Sci-Fi', 2014),
+('The Green Mile', 'Drama', 1999),
+('Gladiator', 'Action', 2000),
+('The Departed', 'Crime', 2006),
+('The Prestige', 'Drama', 2006),
+('Django Unchained', 'Western', 2012),
+('Whiplash', 'Drama', 2014);
+
+-- Wstawianie danych do tabeli "Użytkownicy"
+INSERT INTO Uzytkownicy (nazwa, email) VALUES 
+('Jan Kowalski', 'jan.kowalski@example.com'),
+('Anna Nowak', 'anna.nowak@example.com'),
+('Piotr Wiśniewski', 'piotr.wisniewski@example.com'),
+('Katarzyna Lewandowska', 'k.lewandowska@example.com'),
+('Michał Wójcik', 'michal.wojcik@example.com');
+
+-- Wstawianie danych do tabeli "Oceny"
+INSERT INTO Oceny (id_uzytkownika, id_filmu, ocena) VALUES 
+(1, 1, 9.5), 
+(1, 2, 9.0), 
+(1, 3, 8.5), 
+(2, 4, 9.2), 
+(2, 5, 9.8), 
+(3, 6, 8.5), 
+(3, 7, 9.0), 
+(4, 8, 8.2), 
+(4, 9, 9.5), 
+(5, 10, 9.0), 
+(5, 11, 7.8), 
+(5, 12, 9.6), 
+(2, 13, 8.5), 
+(3, 14, 9.3), 
+(1, 15, 8.0), 
+(4, 16, 8.9), 
+(5, 17, 9.1), 
+(2, 18, 9.4), 
+(3, 19, 8.7), 
+(1, 20, 9.5);

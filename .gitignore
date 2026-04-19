@@ -1,0 +1,23 @@
+# Python
+recommendation-ml/.venv/
+recommendation-ml/__pycache__/
+**/__pycache__/
+*.pyc
+recommendation-ml/.env
+
+# Java / Maven
+recommendation-api/target/
+*.class
+
+# Node / frontend
+recommendation-web/node_modules/
+recommendation-web/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS / misc
+.DS_Store
+*.log

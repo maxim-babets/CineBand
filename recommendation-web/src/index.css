@@ -1,0 +1,49 @@
+:root {
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    sans-serif;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #111827;
+  background: #fafafa;
+  --white: #ffffff;
+  --bg: #fafafa;
+  --gold: #c5a028;
+  --gold-soft: #e8d48a;
+  --blue: #1d4ed8;
+  --blue-hover: #1e40af;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: var(--blue);
+}
+
+a:hover {
+  color: var(--blue-hover);
+}
+
+code {
+  font-size: 0.9em;
+}

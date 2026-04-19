@@ -1,6 +1,48 @@
 # CineBand
 
+**Repository:** [github.com/maxim-babets/CineBand](https://github.com/maxim-babets/CineBand)
+
 Movie discovery with a **Spring Boot** API, **FastAPI** recommender (KNN / matrix factorization / hybrid), **MySQL**, and a **React + TypeScript** UI. Users get a feed, profiles (followers / following), “surprise duel” random pairs, and personalized **For you** lists when signed in. Likes and dislikes from the right contexts feed **learning** (ratings / signals) for the next ML run.
+
+---
+
+## Quick start — run the application locally
+
+Run these **in order** (four moving parts: MySQL, then ML, then API, then web UI).
+
+1. **MySQL** — Start MySQL and ensure database `system_rekomendacji` exists with your schema and data (see [Database setup](#database-setup)). Default connection in code: `localhost:3306`, user `root`, empty password — adjust in `recommendation-api/src/main/resources/application.properties` if needed.
+
+2. **ML service (port 8000)** — From `recommendation-ml`:
+
+   ```bash
+   cd recommendation-ml
+   python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   uvicorn app.main:app --host 127.0.0.1 --port 8000
+   ```
+
+3. **Spring Boot API (port 8080)** — From `recommendation-api`:
+
+   ```bash
+   cd recommendation-api
+   mvn spring-boot:run
+   ```
+
+   Check: [http://127.0.0.1:8080/](http://127.0.0.1:8080/) returns JSON. The API expects the ML service at `http://127.0.0.1:8000` (`ml.service.base-url`).
+
+4. **Web UI (Vite)** — From `recommendation-web` (proxies `/api` to the API on 8080):
+
+   ```bash
+   cd recommendation-web
+   npm install
+   npm run dev
+   ```
+
+   Open the URL Vite prints (usually **http://localhost:5173**). Use the browser URL the terminal shows — `localhost` vs `127.0.0.1` both work with the default proxy.
+
+**Test login (if seeding is enabled):** see [`docs/TESTING_ACCOUNT.md`](docs/TESTING_ACCOUNT.md) — default test credentials are listed in `application.properties` (`cineband.testing-user.*`).
+
+For troubleshooting, TMDB notes, and the full API list, see the sections below.
 
 ---
 
@@ -54,7 +96,9 @@ Connection defaults match `recommendation-api` (`application.properties`) and `r
 
 ---
 
-## Run locally (three processes)
+## Run locally (detailed — three processes + DB)
+
+MySQL must be running first. Then start ML, API, and web as below.
 
 ### 1. ML service (port 8000)
 
@@ -160,20 +204,26 @@ Placeholder banners in the sample SQL use `picsum.photos`; replace those URLs wh
 
 ---
 
-## Publishing to GitHub (demo)
+## Publishing to GitHub
+
+Official repo: **[github.com/maxim-babets/CineBand](https://github.com/maxim-babets/CineBand)**.
 
 1. **Clean build artifacts** (do not commit): `recommendation-api/target/`, `recommendation-web/node_modules/`, `recommendation-web/dist/`, `recommendation-ml/.venv/` — all are in `.gitignore`.
-2. **Secrets**: Keep using placeholder JWT / DB settings in `application.properties` for a public demo, or override with env vars in deployment. Rotate anything you’ve used on a real server before pushing.
-3. **Initialize and push** (create an empty repo on GitHub first, then):
+2. **Secrets**: Use placeholder JWT / DB settings in `application.properties` for a public demo, or override with env vars in deployment. Rotate anything you’ve used on a real server before pushing.
+3. **Clone or push** — If you already have the project locally:
 
 ```bash
 cd /path/to/CineBand
-git init
-git add .
-git commit -m "Initial commit: CineBand demo stack"
+git remote add origin https://github.com/maxim-babets/CineBand.git   # skip if origin exists
 git branch -M main
-git remote add origin https://github.com/YOUR_USER/YOUR_REPO.git
 git push -u origin main
+```
+
+   For a **new** clone from GitHub:
+
+```bash
+git clone https://github.com/maxim-babets/CineBand.git
+cd CineBand
 ```
 
 4. **Repo description** (suggestion): *Spring Boot + FastAPI movie recommendations, React UI, MySQL — portfolio demo.*
